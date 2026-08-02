@@ -228,49 +228,84 @@
   </footer>
 </div>
 
-<script src="https://unpkg.com/@vapi-ai/web@latest/dist/index.js"></script>
 <script>
   // ---- Fill in your own values below ----
-  const VAPI_PUBLIC_KEY = "a3f0bd74-99aa-4f7f-a887-be35fb999582";
+  const VAPI_PUBLIC_KEY = "0ea793fa-10fb-4284-ac11-b0de035e24e8";
   const VAPI_ASSISTANT_ID = "01b78125-360e-4ddf-9fee-b5d1df7c10c5";
   // ----------------------------------------
 
-  const vapi = new Vapi(VAPI_PUBLIC_KEY);
   const button = document.getElementById("talk-button");
   const status = document.getElementById("callStatus");
   const micRing = document.getElementById("micRing");
   let inCall = false;
+  let vapiInstance = null;
+
+  // Vapi's officially documented vanilla-HTML embed. This also injects its
+  // own default floating call button — we hide that with CSS below and
+  // drive everything through our own button + vapiInstance instead.
+  const buttonConfig = {
+    position: "bottom-right",
+    width: "0px",
+    height: "0px",
+  };
+
+  (function (d, t) {
+    var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+    g.defer = true;
+    g.async = true;
+    s.parentNode.insertBefore(g, s);
+    g.onload = function () {
+      vapiInstance = window.vapiSDK.run({
+        apiKey: VAPI_PUBLIC_KEY,
+        assistant: VAPI_ASSISTANT_ID,
+        config: buttonConfig,
+      });
+
+      vapiInstance.on("call-start", () => {
+        inCall = true;
+        button.textContent = "End call";
+        button.classList.add("in-call");
+        micRing.classList.add("active");
+        status.textContent = "Connected — say hello";
+      });
+
+      vapiInstance.on("call-end", () => {
+        inCall = false;
+        button.textContent = "Talk to Meera";
+        button.classList.remove("in-call");
+        micRing.classList.remove("active");
+        status.textContent = "Ready when you are";
+      });
+
+      vapiInstance.on("error", (e) => {
+        console.error("Vapi error:", e);
+        status.textContent = "Something went wrong — check console";
+      });
+
+      button.disabled = false;
+      status.textContent = "Ready when you are";
+    };
+  })(document, "script");
+
+  button.disabled = true;
+  status.textContent = "Loading…";
 
   button.addEventListener("click", () => {
+    if (!vapiInstance) return;
     if (!inCall) {
       status.textContent = "Connecting…";
-      vapi.start(VAPI_ASSISTANT_ID);
+      vapiInstance.start(VAPI_ASSISTANT_ID);
     } else {
-      vapi.stop();
+      vapiInstance.stop();
     }
   });
-
-  vapi.on("call-start", () => {
-    inCall = true;
-    button.textContent = "End call";
-    button.classList.add("in-call");
-    micRing.classList.add("active");
-    status.textContent = "Connected — say hello";
-  });
-
-  vapi.on("call-end", () => {
-    inCall = false;
-    button.textContent = "Talk to Meera";
-    button.classList.remove("in-call");
-    micRing.classList.remove("active");
-    status.textContent = "Ready when you are";
-  });
-
-  vapi.on("error", (e) => {
-    console.error("Vapi error:", e);
-    status.textContent = "Something went wrong — check console";
-  });
 </script>
+
+<style>
+  /* Hide Vapi's own default floating button — we use our custom one above */
+  #vapi-support-btn { display: none !important; }
+</style>
 
 </body>
 </html>
