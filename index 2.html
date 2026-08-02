@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orchid Meadows — Talk to Meera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#F4EFE4;
+    --ink-dim:#C9C2B2;
+    --bg:#132A20;
+    --bg-deep:#0D1F17;
+    --gold:#C9A15A;
+    --gold-dim:#8C7440;
+    --line:rgba(244,239,228,0.14);
+    --card:#173226;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  .display{font-family:'Fraunces',serif;}
+  a{color:inherit;}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  header{padding:28px 0;border-bottom:1px solid var(--line);}
+  .brand{display:flex;align-items:center;gap:10px;font-size:15px;letter-spacing:0.02em;}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+
+  .hero{padding:88px 0 64px;text-align:center;}
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid var(--gold-dim);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:28px;
+  }
+  h1{
+    font-size:clamp(38px,6vw,64px);
+    font-weight:500;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{font-style:italic;color:var(--gold);}
+  .lede{
+    font-size:18px;
+    color:var(--ink-dim);
+    max-width:520px;
+    margin:0 auto 44px;
+  }
+
+  /* Call widget — the signature element */
+  .call-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:36px 32px;
+    max-width:420px;
+    margin:0 auto;
+    position:relative;
+    overflow:hidden;
+  }
+  .call-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% -10%, rgba(201,161,90,0.18), transparent 60%);
+    pointer-events:none;
+  }
+  .mic-ring{
+    width:76px;height:76px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    border:1px solid var(--gold-dim);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .mic-ring.active{border-color:var(--gold);}
+  .mic-ring.active::after{
+    content:"";
+    position:absolute;inset:-8px;
+    border-radius:50%;
+    border:1px solid var(--gold);
+    opacity:0.6;
+    animation:pulse 1.8s ease-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .mic-ring.active::after{animation:none;}
+  }
+  @keyframes pulse{
+    0%{transform:scale(1);opacity:0.6;}
+    100%{transform:scale(1.6);opacity:0;}
+  }
+  .mic-ring svg{width:26px;height:26px;stroke:var(--gold);}
+
+  .call-status{font-size:13px;color:var(--ink-dim);margin-bottom:22px;min-height:18px;}
+
+  #talk-button{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:0.01em;
+    color:var(--bg-deep);
+    background:var(--gold);
+    border:none;
+    border-radius:10px;
+    padding:14px 28px;
+    cursor:pointer;
+    width:100%;
+    transition:background 0.15s ease, transform 0.15s ease;
+  }
+  #talk-button:hover{background:#DCB671;}
+  #talk-button:active{transform:scale(0.98);}
+  #talk-button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+  #talk-button.in-call{background:#B0503F;color:#F4EFE4;}
+  #talk-button.in-call:hover{background:#C05F4C;}
+
+  .call-hint{font-size:12px;color:var(--ink-dim);margin-top:14px;opacity:0.8;}
+
+  /* Facts bar */
+  .facts{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    margin:64px 0;
+  }
+  .fact{background:var(--bg);padding:22px 18px;text-align:center;}
+  .fact .label{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+  .fact .value{font-size:15px;font-weight:500;}
+  @media (max-width:640px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+  }
+
+  section.about{padding:20px 0 64px;border-top:1px solid var(--line);}
+  .about h2{font-size:26px;font-weight:500;margin:0 0 16px;}
+  .about p{color:var(--ink-dim);max-width:600px;}
+
+  .amenities{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:32px;
+  }
+  .amenity{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px 16px;
+    font-size:14px;
+    color:var(--ink-dim);
+  }
+  @media (max-width:640px){
+    .amenities{grid-template-columns:1fr 1fr;}
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:28px 0 48px;
+    font-size:12.5px;
+    color:var(--ink-dim);
+  }
+  footer .disclaimer{max-width:640px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="dot"></span> Skyline Realty Group</div>
+  </header>
+
+  <div class="hero">
+    <span class="eyebrow">Voice demo · Hindi &amp; English</span>
+    <h1>Talk to <em>Meera</em><br>about Orchid&nbsp;Meadows</h1>
+    <p class="lede">Our AI sales executive answers questions about the project, walks through configurations and pricing, and notes down what you're looking for — in Hindi, Hinglish, or English.</p>
+
+    <div class="call-card">
+      <div class="mic-ring" id="micRing">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"/>
+          <path d="M19 11a7 7 0 0 1-14 0"/>
+          <path d="M12 18v3"/>
+        </svg>
+      </div>
+      <div class="call-status" id="callStatus">Ready when you are</div>
+      <button id="talk-button">Talk to Meera</button>
+      <div class="call-hint">Uses your microphone · no phone number needed</div>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><div class="label">Location</div><div class="value">Sector 84, Gurugram</div></div>
+    <div class="fact"><div class="label">Configurations</div><div class="value">2, 3, 4 BHK · Commercial</div></div>
+    <div class="fact"><div class="label">Possession</div><div class="value">Dec 2027</div></div>
+    <div class="fact"><div class="label">Starting price</div><div class="value">₹78 Lakh onward</div></div>
+  </div>
+
+  <section class="about">
+    <h2>About the project</h2>
+    <p>Orchid Meadows sits just off NH-8, twelve minutes from Cyber Hub, with a proposed metro extension five minutes away. The project is anchored around a 20-acre central park and built for both self-use families and long-term investors.</p>
+    <div class="amenities">
+      <div class="amenity">Rooftop infinity pool clubhouse</div>
+      <div class="amenity">Dedicated co-working lounge</div>
+      <div class="amenity">3-tier parking, EV charging</div>
+      <div class="amenity">Landscaped jogging track</div>
+      <div class="amenity">24×7 app-based security</div>
+      <div class="amenity">Kids' &amp; senior citizen zones</div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="disclaimer">This is a demo built for an AI engineering assignment. Orchid Meadows is a fictional project — no real booking, pricing, or legal commitment is associated with it. Conversations are handled by an AI voice agent and may be reviewed for quality testing.</p>
+  </footer>
+</div>
+
+<script src="https://unpkg.com/@vapi-ai/web@latest/dist/index.js"></script>
+<script>
+  // ---- Fill in your own values below ----
+  const VAPI_PUBLIC_KEY = "a3f0bd74-99aa-4f7f-a887-be35fb999582";
+  const VAPI_ASSISTANT_ID = "01b78125-360e-4ddf-9fee-b5d1df7c10c5";
+  // ----------------------------------------
+
+  const vapi = new Vapi(VAPI_PUBLIC_KEY);
+  const button = document.getElementById("talk-button");
+  const status = document.getElementById("callStatus");
+  const micRing = document.getElementById("micRing");
+  let inCall = false;
+
+  button.addEventListener("click", () => {
+    if (!inCall) {
+      status.textContent = "Connecting…";
+      vapi.start(VAPI_ASSISTANT_ID);
+    } else {
+      vapi.stop();
+    }
+  });
+
+  vapi.on("call-start", () => {
+    inCall = true;
+    button.textContent = "End call";
+    button.classList.add("in-call");
+    micRing.classList.add("active");
+    status.textContent = "Connected — say hello";
+  });
+
+  vapi.on("call-end", () => {
+    inCall = false;
+    button.textContent = "Talk to Meera";
+    button.classList.remove("in-call");
+    micRing.classList.remove("active");
+    status.textContent = "Ready when you are";
+  });
+
+  vapi.on("error", (e) => {
+    console.error("Vapi error:", e);
+    status.textContent = "Something went wrong — check console";
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Secrets — never commit these
+.env
+service_account.json
+
+# Local generated data (leads/call logs from testing)
+data/leads.json
+logs/
+
+# OS
+.DS_Store

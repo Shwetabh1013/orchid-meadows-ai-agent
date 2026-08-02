@@ -1,0 +1,29 @@
+{
+  "project_name": "Orchid Meadows",
+  "developer": "Skyline Realty Group",
+  "location": "Sector 84, off NH-8, Gurugram, Haryana",
+  "location_advantages": [
+    "12 minutes from Cyber Hub / DLF Cyber City",
+    "5 minutes from proposed metro extension (Sector 84 station)",
+    "Adjacent to Orchid International School and a 20-acre central park",
+    "Direct access to NH-8, 25 minutes from IGI Airport"
+  ],
+  "configurations": [
+    {"type": "2 BHK", "size_sqft": 1150, "price_inr_lakh": [78, 85]},
+    {"type": "3 BHK", "size_sqft": 1650, "price_inr_lakh": [112, 128]},
+    {"type": "4 BHK", "size_sqft": 2400, "price_inr_lakh": [168, 190]},
+    {"type": "Commercial (retail/office shell)", "size_sqft": 500, "price_inr_lakh": [65, 90]}
+  ],
+  "amenities": [
+    "Clubhouse with rooftop infinity pool",
+    "Dedicated co-working lounge",
+    "24x7 security with app-based visitor management",
+    "3-tier parking, EV charging points",
+    "Landscaped central courtyard, jogging track",
+    "Kids' play area and senior citizen zone"
+  ],
+  "possession_timeline": "December 2027 (currently at slab casting stage, RERA registered)",
+  "rera_id": "HRERA-GGM-2024-DEMO-0157 (illustrative, not a real registration)",
+  "payment_plan": "20% on booking, 60% construction-linked, 20% on possession",
+  "disclaimer": "This is a fictional demo project created for an AI calling agent assignment. No real booking, pricing, or legal commitment is associated with it."
+}
